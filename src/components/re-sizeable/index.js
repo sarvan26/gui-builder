@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Dropdown } from 'react-bootstrap'
 import { Rnd } from 'react-rnd';
-import './style.css';
 import extend from 'extend';
 
 
@@ -41,9 +40,7 @@ class Resizeable extends Component {
     getComponent = (style) => {
         const { type } = this.state
         let renderGuiComponent;
-        if (type === 'button') {
-            return <Button style={style}>Drag me</Button>
-        }
+        if (type === 'button') return <Button style={style}>Drag me</Button>
         else if (type === 'input') return <input style={style} />
         else return <textarea style={style} />
     }
@@ -80,9 +77,6 @@ class Resizeable extends Component {
                     }}
                 >
                     {this.getComponent(componentStyle)}
-                    {/* <input style={{ width: this.state.width, height: this.state.height }}/> */}
-                    {/* <type style={{ width: this.state.width, height: this.state.height }} /> */}
-                    {/* <Button style={{ width: this.state.width, height: this.state.height }}>Drag Me</Button> */}
                 </Rnd>
             </React.Fragment>
         )

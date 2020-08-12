@@ -30,15 +30,23 @@ class GuiBuilder extends Component {
     }
 
     drag = (ev) => {
+        this.setState({ p1: ev.clientX, p2: ev.clientY })
         ev.dataTransfer.setData("text", ev.target.id);
     }
 
     drop = (ev) => {
         ev.preventDefault();
-        const { components } = this.state
+        const { components, p1, p2 } = this.state
+        this.circle = ev.target;
+
+        let p3 = p1 - ev.clientY
+        let p4 = p2 - ev.clientY
 
         var data = ev.dataTransfer.getData("text");
-        let updatedState = { id: Math.random(), name: data, width: 200, height: 50, x: 10, y: 10 }
+        let updatedState = {
+            id: Math.random(), name: data, width: 200, height: 50, x: this.circle.offsetLeft - p4,
+            y: this.circle.offsetTop - p3
+        }
         this.setState({
             components: [...components, updatedState]
         })
@@ -72,7 +80,6 @@ class GuiBuilder extends Component {
                                 <span>Button</span>
                             </Col>
                             <Col md={5} sm={5} className="compContainer" id="input" name="input" draggable="true" onDragStart={this.drag}>
-                                {/* <input id="input" style={{ width: '60px' }} /> */}
                                 <div className="inputImg" />
                                 <span>Input</span>
                             </Col>
@@ -98,8 +105,8 @@ class GuiBuilder extends Component {
                 </footer>
             </div>
             <div id="_builder_space" onDrop={this.drop} onDragOver={this.allowDrop}>
-                {components.length ? components.map(item => {
-                    return <Resizeable type={item.name} item={item} updateElement={this.updateElement} />
+                {components.length ? components.map((item, index) => {
+                    return <Resizeable key={index} type={item.name} item={item} updateElement={this.updateElement} />
                 }) : <div className="noContent">Drag and Drop components here</div>}
             </div>
             </>
